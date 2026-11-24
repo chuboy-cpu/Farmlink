@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Create account · Farmer's LinkUp{% endblock %}
+{% block body %}
+<div class="container auth-wrap py-5">
+  <a class="brand d-block text-center mb-4" href="{{ url_for('landing') }}"><i class="bi bi-flower1"></i> Farmer's LinkUp</a>
+  <div class="card-lite p-4">
+    <h3>Create Farmer Account</h3>
+    <p class="text-muted">Sell directly to verified buyers across the Southeast.</p>
+    {% with msgs = get_flashed_messages(with_categories=true) %}
+      {% for cat,msg in msgs %}<div class="alert alert-{{ cat }}">{{ msg }}</div>{% endfor %}
+    {% endwith %}
+    <form method="post">
+      <div class="mb-3"><label class="form-label">Full name</label>
+        <input class="form-control" name="name" placeholder="As on your NIN / bank account" required></div>
+      <div class="mb-3"><label class="form-label">Email address</label>
+        <input class="form-control" type="email" name="email" required></div>
+      <div class="mb-3"><label class="form-label">Password</label>
+        <div class="input-group"><input id="pw" class="form-control" type="password" name="password" minlength="8" required>
+          <button class="btn btn-outline-slate" type="button" data-toggle-pw="#pw"><i class="bi bi-eye"></i></button></div>
+        <div class="form-text">At least 8 characters.</div></div>
+      <div class="mb-3"><label class="form-label">Confirm password</label>
+        <input class="form-control" type="password" name="confirm" required></div>
+      <button class="btn btn-primary w-100">Create Account <i class="bi bi-arrow-right"></i></button>
+    </form>
+    <p class="text-center mt-3 mb-0 text-muted">Already have an account? <a href="{{ url_for('login') }}">Log In</a></p>
+  </div>
+</div>
+{% endblock %}

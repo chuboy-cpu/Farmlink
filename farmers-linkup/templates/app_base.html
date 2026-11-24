@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% set nav = [
+  ('dashboard','Home','bi-house-door'),
+  ('produce','Produce','bi-basket'),
+  ('requests_page','Requests','bi-bag-check'),
+  ('sales','Sales','bi-cash-coin'),
+  ('account','Account','bi-person-circle')] %}
+{% block body %}
+<header class="topbar">
+  <div class="container d-flex align-items-center justify-content-between py-2" style="max-width:1120px">
+    <a class="brand" href="{{ url_for('dashboard') }}"><i class="bi bi-flower1"></i> Farmer's LinkUp</a>
+    <nav class="topnav d-none d-md-flex gap-1">
+      {% for ep,label,icon in nav %}
+        <a href="{{ url_for(ep) }}" class="{{ 'active' if request.endpoint == ep else '' }}">{{ label }}
+          {% if ep=='requests_page' and pending_count %}<span class="pill pill-orange ms-1">{{ pending_count }}</span>{% endif %}</a>
+      {% endfor %}
+    </nav>
+  </div>
+</header>
+
+<main class="container app-main py-4">
+  {% with msgs = get_flashed_messages(with_categories=true) %}
+    {% for cat, msg in msgs %}
+      <div class="alert alert-{{ cat }} alert-dismissible fade show" role="alert">{{ msg }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+    {% endfor %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+
+<nav class="tabbar d-md-none">
+  {% for ep,label,icon in nav %}
+    <a href="{{ url_for(ep) }}" class="{{ 'active' if request.endpoint == ep else '' }}">
+      <i class="bi {{ icon }}"></i>{{ label }}
+      {% if ep=='requests_page' and pending_count %}<span class="badge-dot">{{ pending_count }}</span>{% endif %}</a>
+  {% endfor %}
+</nav>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "app_base.html" %}
+{% block title %}Buyer Requests · Farmer's LinkUp{% endblock %}
+{% block content %}
+<h3>Buyer Requests</h3>
+<p class="text-muted">Payment is held in escrow until your produce is weighed and collected.</p>
+
+{% for o in offers %}
+<div class="card-lite p-3 mb-3 {{ 'card-urgent' if o.urgent }}" {% if o.urgent %}style="background:#FFF7ED"{% endif %}>
+  {% if o.urgent %}<span class="pill pill-orange mb-2"><i class="bi bi-alarm"></i> Urgent · pickup {{ o.pickup }}</span>{% endif %}
+  <div class="d-flex justify-content-between">
+    <div>
+      <div class="fw-bold">{{ o.buyer }}</div>
+      <div class="small text-muted">{{ o.place }}</div>
+    </div>
+    <span class="pill pill-green"><i class="bi bi-shield-check"></i> {{ o.trust }}%</span>
+  </div>
+  <hr class="my-2">
+  <div class="d-flex justify-content-between align-items-end">
+    <div>
+      <div>{{ o.crop }}</div>
+      <div class="small text-muted">{{ o.qty }} kg of {{ o.batch_qty }} kg batch</div>
+      {% if not o.urgent %}<div class="small text-muted"><i class="bi bi-truck"></i> Pickup {{ o.pickup }}</div>{% endif %}
+    </div>
+    <div class="text-end">
+      <div class="small text-muted">{{ o.price|naira }}/kg</div>
+      <div class="price text-success">{{ (o.qty * o.price)|naira }}</div>
+    </div>
+  </div>
+  <div class="d-flex gap-2 mt-3">
+    <a href="{{ url_for('review', oid=o.id) }}" class="btn {{ 'btn-urgent' if o.urgent else 'btn-primary' }} flex-fill">Accept</a>
+    <form method="post" action="{{ url_for('decline', oid=o.id) }}">
+      <button class="btn btn-outline-slate">Decline</button></form>
+  </div>
+</div>
+{% else %}
+<div class="card-lite p-4 text-center text-muted">No pending offers. New ones will appear here.</div>
+{% endfor %}
+{% endblock %}

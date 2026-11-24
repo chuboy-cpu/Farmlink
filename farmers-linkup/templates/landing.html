@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block body %}
+<header class="bg-white border-bottom">
+  <div class="container d-flex align-items-center justify-content-between py-3">
+    <a class="brand" href="{{ url_for('landing') }}"><i class="bi bi-flower1"></i> Farmer's LinkUp</a>
+    <div class="d-flex gap-2">
+      <a href="{{ url_for('login') }}" class="btn btn-outline-slate btn-sm">Sign In</a>
+      <a href="{{ url_for('signup') }}" class="btn btn-primary btn-sm">Get Started</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container text-center" style="max-width:760px">
+    <span class="pill pill-green mb-3"><i class="bi bi-patch-check-fill"></i> Verified commercial buyers only</span>
+    <h1>Connect Directly with Verified Buyers. Sell Produce Before It Spoils.</h1>
+    <p class="lead text-muted my-4">Zero middleman cuts and fast collection. Sell to bulk buyers across Anambra, Imo, Abia and Enugu, with payment secured in escrow.</p>
+    <a href="{{ url_for('signup') }}" class="btn btn-primary btn-lg px-4"><i class="bi bi-basket"></i> List Produce Now</a>
+  </div>
+</section>
+
+<section class="container py-4" style="max-width:900px">
+  <div class="row g-3 text-center">
+    {% for n,l in [('₦142M+','Produce value traded'),('< 48 hrs','Average match time'),('4 States','Anambra · Imo · Abia · Enugu'),('0%','Spoilage on matched batches')] %}
+    <div class="col-6 col-md-3"><div class="card-lite p-3 h-100">
+      <div class="stat-num text-success">{{ n }}</div><div class="small text-muted">{{ l }}</div></div></div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="container py-5" style="max-width:760px">
+  <h2 class="text-center mb-4">How it works</h2>
+  {% for t,d in [('Sign up','Create your farmer profile in a minute.'),
+                 ('List your produce','Add the crop, quantity and your price per kg.'),
+                 ('Accept a buyer offer','Review offers from verified buyers and accept the best one.'),
+                 ('Get paid','Funds are held in escrow and released to your bank after pickup and weighing.')] %}
+  <div class="d-flex gap-3 mb-3 card-lite p-3">
+    <div class="step-num">{{ loop.index }}</div>
+    <div><div class="fw-bold">{{ t }}</div><div class="text-muted">{{ d }}</div></div>
+  </div>
+  {% endfor %}
+</section>
+
+<section class="container pb-5" style="max-width:900px">
+  <div class="cta-band text-center p-5">
+    <h3 class="text-white">Ready to sell your harvest?</h3>
+    <a href="{{ url_for('signup') }}" class="btn btn-urgent mt-2">Create Free Account</a>
+  </div>
+</section>
+<footer class="text-center text-muted small pb-4">© Farmer's LinkUp · Prototype</footer>
+{% endblock %}

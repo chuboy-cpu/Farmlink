@@ -1,0 +1,37 @@
+{% extends "app_base.html" %}
+{% block title %}Review Order · Farmer's LinkUp{% endblock %}
+{% block content %}
+<a href="{{ url_for('requests_page') }}" class="text-decoration-none small"><i class="bi bi-arrow-left"></i> Back to requests</a>
+<h3 class="mt-2">Review &amp; Confirm</h3>
+
+<div class="card-lite p-3 mb-3">
+  <div class="fw-bold">{{ o.buyer }}</div>
+  <div class="small text-muted mb-3">{{ o.place }} · <span class="text-success">Verified</span></div>
+  <div class="d-flex justify-content-between"><span class="text-muted">Produce</span><span class="fw-semibold">{{ o.crop }}</span></div>
+  <div class="d-flex justify-content-between"><span class="text-muted">Quantity</span><span class="fw-semibold">{{ o.qty }} kg</span></div>
+  <div class="d-flex justify-content-between"><span class="text-muted">Price</span><span class="fw-semibold">{{ o.price|naira }} / kg</span></div>
+  <div class="d-flex justify-content-between"><span class="text-muted">Platform fee</span><span class="fw-semibold">₦0 (launch offer)</span></div>
+  <hr>
+  <div class="d-flex justify-content-between align-items-center"><span class="fw-bold">Total payout</span>
+    <span class="price text-success">{{ total|naira }}</span></div>
+</div>
+
+<div class="card-lite p-3 mb-3">
+  <div class="fw-bold mb-2"><i class="bi bi-truck"></i> Pickup</div>
+  <div>{{ o.pickup }}</div>
+  <div class="small text-muted">{{ o.depot }}</div>
+</div>
+
+<div class="card-lite p-3 mb-3" style="background:var(--green-soft)">
+  <div class="fw-bold text-success"><i class="bi bi-lock-fill"></i> {{ total|naira }} secured in escrow</div>
+  <div class="small">Released to your bank once the produce is collected and weighed.</div>
+</div>
+
+<form method="post" action="{{ url_for('confirm', oid=o.id) }}">
+  <div class="form-check mb-3">
+    <input class="form-check-input" type="checkbox" id="ready" required>
+    <label class="form-check-label" for="ready">My {{ o.qty }} kg of {{ o.crop }} is harvested and ready for loading.</label>
+  </div>
+  <button class="btn btn-primary w-100"><i class="bi bi-check2-circle"></i> Confirm Order</button>
+</form>
+{% endblock %}

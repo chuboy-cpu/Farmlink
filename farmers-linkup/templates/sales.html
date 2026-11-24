@@ -1,0 +1,48 @@
+{% extends "app_base.html" %}
+{% block title %}Sales · Farmer's LinkUp{% endblock %}
+{% block content %}
+<h3>Sales</h3>
+<div class="card-lite p-3 mb-4" style="background:var(--green-soft)">
+  <div class="small text-muted">Total paid out</div>
+  <div class="stat-num text-success">{{ earned|naira }}</div>
+</div>
+
+<h5>Awaiting pickup</h5>
+{% for o in awaiting %}
+<div class="card-lite p-3 mb-3">
+  <div class="d-flex justify-content-between">
+    <div><div class="fw-bold">{{ o.buyer }}</div>
+      <div class="small text-muted">{{ o.id }} · {{ o.qty }} kg {{ o.crop }}</div></div>
+    <div class="price">{{ order_total(o)|naira }}</div>
+  </div>
+
+  <div class="track my-3">
+    <div class="node done"><i class="bi bi-check"></i></div><div class="line done"></div>
+    <div class="node active">2</div><div class="line"></div>
+    <div class="node">3</div>
+  </div>
+  <div class="track-labels"><span>Confirmed</span><span>Weigh &amp; sign off</span><span>Paid</span></div>
+
+  <form method="post" action="{{ url_for('signoff', oid=o.id) }}" class="mt-3">
+    <label class="form-label">Weight recorded at pickup (kg)</label>
+    <input class="form-control mb-2" type="number" name="weighed" min="1" value="{{ o.qty }}"
+           data-weigh="pay-{{ o.id }}" data-rate="{{ o.price }}">
+    <div class="small text-muted mb-3">Payout: <strong id="pay-{{ o.id }}">{{ order_total(o)|naira }}</strong></div>
+    <button class="btn btn-primary w-100"><i class="bi bi-clipboard-check"></i> Sign Off &amp; Release Payment</button>
+  </form>
+</div>
+{% else %}
+<div class="card-lite p-3 text-muted mb-3">No pickups waiting.</div>
+{% endfor %}
+
+<h5 class="mt-4">Paid</h5>
+<div class="card-lite">
+  {% for o in paid %}
+  <div class="p-3 {{ 'border-bottom' if not loop.last }} d-flex justify-content-between align-items-center">
+    <div><div class="fw-semibold">{{ o.buyer }}</div>
+      <div class="small text-muted">{{ o.qty }} kg {{ o.crop }} · {{ o.date }}</div></div>
+    <div class="text-end"><div class="fw-bold">{{ order_total(o)|naira }}</div><span class="pill pill-green">Paid</span></div>
+  </div>
+  {% else %}<div class="p-3 text-muted">No paid orders yet.</div>{% endfor %}
+</div>
+{% endblock %}

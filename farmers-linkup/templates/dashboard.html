@@ -1,0 +1,49 @@
+{% extends "app_base.html" %}
+{% block title %}Home · Farmer's LinkUp{% endblock %}
+{% block content %}
+<div class="card-lite p-3 mb-3 d-flex align-items-center gap-3">
+  <div class="step-num" style="width:52px;height:52px;font-size:20px">{{ farmer.name[0] }}</div>
+  <div>
+    <h4 class="mb-0">{{ farmer.name }}</h4>
+    <div class="small text-muted"><i class="bi bi-geo-alt"></i> {{ farmer.location }}</div>
+    <span class="pill pill-green mt-1"><i class="bi bi-patch-check-fill"></i> Verified Farmer</span>
+  </div>
+</div>
+
+{% if pending %}
+<div class="card-lite card-urgent p-3 mb-3" style="background:var(--orange-soft)">
+  <span class="pill pill-orange mb-2" style="background:#fff"><i class="bi bi-lightning-fill"></i> Needs your attention</span>
+  <h5 class="mb-1">{{ pending|length }} buyer offer{{ 's' if pending|length > 1 }} waiting</h5>
+  <p class="mb-3 text-muted">Respond quickly so your produce doesn't spoil.</p>
+  <a href="{{ url_for('requests_page') }}" class="btn btn-urgent">Review Offers <i class="bi bi-arrow-right"></i></a>
+</div>
+{% endif %}
+
+<div class="row g-3 mb-3">
+  <div class="col-6"><div class="card-lite p-3 h-100"><div class="small text-muted">Active listings</div>
+    <div class="stat-num">{{ active|length }}</div></div></div>
+  <div class="col-6"><div class="card-lite p-3 h-100"><div class="small text-muted">Pending offers</div>
+    <div class="stat-num">{{ pending|length }}</div></div></div>
+  <div class="col-12"><div class="card-lite p-3"><div class="small text-muted">Total paid out · {{ trades }} trades</div>
+    <div class="stat-num text-success">{{ earned|naira }}</div></div></div>
+</div>
+
+<a href="{{ url_for('produce_new') }}" class="btn btn-primary w-100 mb-4"><i class="bi bi-plus-circle"></i> List New Produce</a>
+
+<h5>Recent activity</h5>
+<div class="card-lite">
+  {% for o in recent %}
+  <div class="p-3 {{ 'border-bottom' if not loop.last }} d-flex justify-content-between align-items-center">
+    <div>
+      <div class="fw-semibold">{{ o.qty }} kg {{ o.crop }}</div>
+      <div class="small text-muted">{{ o.buyer }} · {{ o.date }}</div>
+    </div>
+    <div class="text-end">
+      <div class="fw-bold">{{ order_total(o)|naira }}</div>
+      {% if o.status == 'paid' %}<span class="pill pill-green">Paid</span>
+      {% else %}<span class="pill pill-orange">Awaiting pickup</span>{% endif %}
+    </div>
+  </div>
+  {% else %}<div class="p-3 text-muted">No activity yet.</div>{% endfor %}
+</div>
+{% endblock %}
