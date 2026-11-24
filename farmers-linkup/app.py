@@ -10,7 +10,7 @@ from flask import (Flask, flash, redirect, render_template, request,
                    session, url_for, abort)
 
 app = Flask(__name__)
-app.secret_key = "prototype-only-change-me"
+app.secret_key = "9f2c1e...your-long-random-string..."
 
 SEED = {
     "farmer": {
